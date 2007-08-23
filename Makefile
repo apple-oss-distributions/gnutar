@@ -16,11 +16,13 @@ include $(MAKEFILEPATH)/CoreOS/ReleaseControl/GNUSource.make
 # Automatic Extract & Patch
 AEP            = YES
 AEP_Project    = tar
-AEP_Version    = 1.14
+AEP_Version    = 1.15.1
 AEP_ProjVers   = $(AEP_Project)-$(AEP_Version)
 AEP_Filename   = $(AEP_ProjVers).tar.bz2
 AEP_ExtractDir = $(AEP_ProjVers)
-AEP_Patches    = src__extract.diff PR3885704.diff EA.diff
+AEP_Patches    = PR3885704.diff EA.diff Makefile.in.diff preallocate.diff \
+                 tar-1.15.1-heapOverflow.patch tar-1.15.1-mangling.patch \
+                 quarantine.diff fix-tests.diff PR5405409.diff
 
 ifeq ($(suffix $(AEP_Filename)),.bz2)
 AEP_ExtractOption = j
@@ -41,6 +43,7 @@ endif
 
 remove-dir:
 	$(RM) $(DSTROOT)/usr/share/info/dir
+	$(RM) $(DSTROOT)/usr/lib/charset.alias
 
 link-bin:
 	$(LN) $(DSTROOT)/usr/bin/gnutar $(DSTROOT)/usr/bin/tar
